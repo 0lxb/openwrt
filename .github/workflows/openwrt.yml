@@ -13,9 +13,9 @@ jobs:
 
     steps:
     - name: cleanup ubuntu server
-        env:
+      env:
           DEBIAN_FRONTEND: noninteractive
-        run: |
+      run: |
           docker rmi `docker images -q`
           sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android
           sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mysql* php* mongodb* dotnet* moby* snapd* || true
@@ -25,12 +25,12 @@ jobs:
           sudo -E apt-get clean
 
     - name: checkout
-        uses: actions/checkout@v2
-        with:
+      uses: actions/checkout@v2
+      with:
           ref: master
 
     - name: prepare output
-        run: |
+      run: |
           sudo mkdir -p -m 777 /mnt/openwrt/bin /mnt/openwrt/build_dir/host /mnt/openwrt/build_dir/hostpkg /mnt/openwrt/dl /mnt/openwrt/feeds /mnt/openwrt/staging_dir
           ln -s /mnt/openwrt/bin ./bin
           mkdir -p ./build_dir
@@ -45,12 +45,12 @@ jobs:
           echo "======================="
 
     - name: update feeds
-        run: |
+      run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
     - name: make defconfigure
-        run: |
+      run: |
           rm -f ./.config*
           touch ./.config
           cat >> .config <<EOF
@@ -61,7 +61,7 @@ jobs:
           make defconfig
 
     - name: download
-        run: |
+      run: |
           make download -j8 || make download -j1 V=s
           rm -rf $(find ./dl/ -size -1024c)
           echo "space usage:"
@@ -70,7 +70,7 @@ jobs:
           echo "======================="
 
     - name: compile firmware
-        run: |
+      run: |
           make -j$(nproc) || make -j1 V=s
           echo "======================="
           echo "space usage:"
@@ -81,12 +81,12 @@ jobs:
           du -h /mnt/openwrt/ --max-depth=1 || true
 
     - name: prepare artifact
-        run: |
+      run: |
           mkdir -p ./artifact/
           cp -rf $(find ./bin/targets/ -name "*.bin" -type f) ./artifact/
 
     - name: deliver firmware
-        uses: actions/upload-artifact@v2
-        with:
+      uses: actions/upload-artifact@v2
+      with:
           name: openwrt_firmware
           path: ./artifact/
