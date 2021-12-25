@@ -1,6 +1,7 @@
 name: wdr6500 openwrt CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [ openwrt-19.07 ]
   pull_request:
