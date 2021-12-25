@@ -57,9 +57,18 @@ jobs:
           rm -f ./.config*
           touch ./.config
           cat >> .config <<EOF
+          CONFIG_TARGET_ar71xx=y
+          CONFIG_TARGET_ar71xx_generic=y
           CONFIG_TARGET_ar71xx_generic_DEVICE_tl-wdr6500-v2=y
-          CONFIG_PACKAGE_luci=y
-          CONFIG_PACKAGE_luci-ssl=y
+          CONFIG_TARGET_BOARD="ar71xx"
+          CONFIG_TARGET_PROFILE="DEVICE_tl-wdr6500-v2"
+          CONFIG_FEED_packages=y
+          CONFIG_FEED_luci=y
+          CONFIG_FEED_routing=y
+          CONFIG_FEED_telephony=y
+          CONFIG_PACKAGE_uhttpd=y
+          CONFIG_PACKAGE_uhttpd-mod-lua=y
+          CONFIG_PACKAGE_uhttpd-mod-ubus=y
           EOF
           sed -i 's/^[ \t]*//g' ./.config
           make defconfig
@@ -91,7 +100,7 @@ jobs:
     - name: prepare artifact
       run: |
           mkdir -p ./artifact/
-          cp -rf $(find ./bin/targets/ -name "*.bin" -type f) ./artifact/
+          cp -rvf $(find ./bin/targets/ -name "*.bin" -type f) ./artifact/
 
     - name: deliver firmware
       uses: actions/upload-artifact@v2
