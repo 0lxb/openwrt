@@ -1,0 +1,99 @@
+name: wdr6500 openwrt CI
+
+on:
+  push:
+    branches: [ openwrt-19.07 ]
+  pull_request:
+    branches: [ openwrt-19.07 ]
+
+jobs:
+  build:
+    name: build wdr6500 openwrt
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: cleanup ubuntu server
+      env:
+          DEBIAN_FRONTEND: noninteractive
+      run: |
+          docker rmi `docker images -q`
+          sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android
+          sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mysql* php* mongodb* dotnet* moby* snapd* || true
+          sudo -E apt-get update
+          sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler antlr3 gperf swig libtinfo5
+          sudo -E apt-get -y autoremove --purge
+          sudo -E apt-get clean
+
+    - name: checkout
+      uses: actions/checkout@v2
+      with:
+          ref: openwrt-19.07
+
+    - name: prepare output
+      run: |
+          sudo mkdir -p -m 777 /mnt/openwrt/bin /mnt/openwrt/build_dir/host /mnt/openwrt/build_dir/hostpkg /mnt/openwrt/dl /mnt/openwrt/feeds /mnt/openwrt/staging_dir
+          ln -s /mnt/openwrt/bin ./bin
+          mkdir -p ./build_dir
+          ln -s -f /mnt/openwrt/build_dir/host ./build_dir/host
+          ln -s -f /mnt/openwrt/build_dir/hostpkg ./build_dir/hostpkg
+          ln -s /mnt/openwrt/dl ./dl
+          ln -s /mnt/openwrt/feeds ./feeds
+          ln -s /mnt/openwrt/staging_dir ./staging_dir
+          echo "space usage:"
+          echo "======================="
+          df -h
+          echo "======================="
+          free
+          echo "======================="
+
+    - name: update feeds
+      run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+    - name: make defconfigure
+      run: |
+          rm -f ./.config*
+          touch ./.config
+          cat >> .config <<EOF
+          CONFIG_TARGET_ar71xx_generic_DEVICE_tl-wdr6500-v2=y
+          CONFIG_PACKAGE_luci=y
+          CONFIG_PACKAGE_luci-ssl=y
+          EOF
+          sed -i 's/^[ \t]*//g' ./.config
+          make defconfig
+
+    - name: download
+      run: |
+          make download -j8 || make download -j1 V=s
+          rm -rf $(find ./dl/ -size -1024c)
+          echo "space usage:"
+          echo "======================="
+          df -h
+          echo "======================="
+          free
+          echo "======================="
+
+    - name: compile firmware
+      run: |
+          make -j$(nproc) || make -j1 V=s
+          echo "======================="
+          echo "space usage:"
+          echo "======================="
+          df -h
+          echo "======================="
+          free
+          echo "======================="
+          du -h ./ --max-depth=1
+          du -h /mnt/openwrt/ --max-depth=1 || true
+
+    - name: prepare artifact
+      run: |
+          mkdir -p ./artifact/
+          cp -rf $(find ./bin/targets/ -name "*.bin" -type f) ./artifact/
+
+    - name: deliver firmware
+      uses: actions/upload-artifact@v2
+      with:
+          name: openwrt_firmware
+          path: ./artifact/
