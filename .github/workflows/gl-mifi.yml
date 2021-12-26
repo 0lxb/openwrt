@@ -56,6 +56,8 @@ jobs:
           cat >> .config <<EOF
           CONFIG_TARGET_ath79_generic_DEVICE_glinet_gl-mifi=y
           CONFIG_TARGET_PROFILE="DEVICE_glinet_gl-mifi"
+          # CONFIG_PACKAGE_dnsmasq is not set
+          # CONFIG_PACKAGE_wpad-basic-wolfssl is not set
           CONFIG_GLINET_BASIC_PACKAGES=y
           CONFIG_RTC_SUPPORT=y
           CONFIG_GLINET_OPENVPN=y
