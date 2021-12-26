@@ -66,6 +66,8 @@ jobs:
           CONFIG_GLINET_USB=y
           CONFIG_GLINET_WEBCAM=y
           CONFIG_GLINET_RTC=y
+          CONFIG_PACKAGE_luci=y
+          CONFIG_PACKAGE_luci-ssl=y
           EOF
           sed -i 's/^[ \t]*//g' ./.config
           make defconfig
