@@ -11,7 +11,7 @@ include $(INCLUDE_DIR)/kernel.mk
 PKG_NAME:=mac80211
 
 PKG_VERSION:=5.15.8-1
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_SOURCE_URL:=@KERNEL/linux/kernel/projects/backports/stable/v5.15.8/
 PKG_HASH:=9f71b659c034f19d156532ec780fcb606cee3c4ccc42e2f8ef18dd3e9f1b6820
 
@@ -419,9 +419,15 @@ config-$(call config_package,rsi91x-sdio) += RSI_SDIO
 
 config-$(CONFIG_LEDS_TRIGGERS) += MAC80211_LEDS
 
+C_DEFINES=
+
+ifeq ($(BUILD_VARIANT),smallbuffers)
+	C_DEFINES+= -DCONFIG_ATH10K_SMALLBUFFERS
+endif
+
 MAKE_OPTS:= -C "$(PKG_BUILD_DIR)" \
 	$(KERNEL_MAKE_FLAGS) \
-	EXTRA_CFLAGS="-I$(PKG_BUILD_DIR)/include $(IREMAP_CFLAGS)" \
+	EXTRA_CFLAGS="-I$(PKG_BUILD_DIR)/include $(IREMAP_CFLAGS) $(C_DEFINES)" \
 	KLIB_BUILD="$(LINUX_DIR)" \
 	MODPROBE=true \
 	KLIB=$(TARGET_MODULES_DIR) \

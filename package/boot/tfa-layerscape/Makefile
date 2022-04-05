@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tfa-layerscape
-PKG_VERSION:=LSDK-21.08
+PKG_VERSION:=21.08
 PKG_RELEASE:=$(AUTORELEASE)
 
 PKG_SOURCE_PROTO:=git
@@ -25,7 +25,8 @@ define Host/Compile
 	$(MAKE) -C \
 		$(HOST_BUILD_DIR)/tools/fiptool \
 		CFLAGS="$(HOST_CFLAGS)" \
-		LDFLAGS="$(HOST_LDFLAGS)"
+		LDFLAGS="$(HOST_LDFLAGS)" \
+		HOSTCCFLAGS="$(HOST_CFLAGS)"
 	$(MAKE) -C \
 		$(HOST_BUILD_DIR)/tools/nxp \
 		CFLAGS="$(HOST_CFLAGS)"
