@@ -176,9 +176,7 @@ define KernelPackage/nf-flow
 	CONFIG_NF_FLOW_TABLE \
 	CONFIG_NF_FLOW_TABLE_HW
   DEPENDS:=+kmod-nf-conntrack
-  FILES:= \
-	$(LINUX_DIR)/net/netfilter/nf_flow_table.ko \
-	$(if $(CONFIG_LINUX_5_4),$(LINUX_DIR)/net/netfilter/nf_flow_table_hw.ko)
+  FILES:= $(LINUX_DIR)/net/netfilter/nf_flow_table.ko
   AUTOLOAD:=$(call AutoProbe,nf_flow_table nf_flow_table_hw)
 endef
 
@@ -350,6 +348,7 @@ IPSET_MODULES:= \
 	ipset/ip_set_bitmap_ipmac \
 	ipset/ip_set_bitmap_port \
 	ipset/ip_set_hash_ip \
+	ipset/ip_set_hash_ipmac \
 	ipset/ip_set_hash_ipmark \
 	ipset/ip_set_hash_ipport \
 	ipset/ip_set_hash_ipportip \
@@ -1272,3 +1271,14 @@ define KernelPackage/nft-compat
 endef
 
 $(eval $(call KernelPackage,nft-compat))
+
+define KernelPackage/nft-xfrm
+  SUBMENU:=$(NF_MENU)
+  TITLE:=Netfilter nf_tables xfrm support (ipsec)
+  DEPENDS:=+kmod-nft-core
+  FILES:=$(foreach mod,$(NFT_XFRM-m),$(LINUX_DIR)/net/$(mod).ko)
+  AUTOLOAD:=$(call AutoProbe,$(notdir $(NFT_XFRM-m)))
+  KCONFIG:=$(KCONFIG_NFT_XFRM)
+endef
+
+$(eval $(call KernelPackage,nft-xfrm))
