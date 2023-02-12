@@ -54,7 +54,7 @@ define Device/alfa-network_tube-e4g
   DEVICE_VENDOR := ALFA Network
   DEVICE_MODEL := Tube-E4G
   DEVICE_PACKAGES := kmod-usb2 kmod-usb-ohci uboot-envtools uqmi -iwinfo \
-	-kmod-rt2800-soc -wpad-basic-wolfssl
+	-kmod-rt2800-soc -wpad-basic-mbedtls
   SUPPORTED_DEVICES += tube-e4g
 endef
 TARGET_DEVICES += alfa-network_tube-e4g
@@ -1103,6 +1103,17 @@ define Device/sitecom_wlr-4100-v1-002
   DEVICE_PACKAGES := kmod-usb2 kmod-usb-ohci uboot-envtools
 endef
 TARGET_DEVICES += sitecom_wlr-4100-v1-002
+
+define Device/snr_cpe-w4n-mt
+  $(Device/uimage-lzma-loader)
+  SOC := mt7620n
+  IMAGE_SIZE := 7360k
+  DEVICE_VENDOR := SNR
+  DEVICE_MODEL := CPE-W4N
+  DEVICE_VARIANT := MT
+  UIMAGE_NAME := SNR-CPE-W4N-MT
+endef
+TARGET_DEVICES += snr_cpe-w4n-mt
 
 define Device/tplink_archer-c20i
   $(Device/tplink-v2)
