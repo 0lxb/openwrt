@@ -111,7 +111,7 @@ DEVICE_VARS += SIGNATURE
 DEVICE_VARS += NETGEAR_BOARD_ID NETGEAR_REGION TPLINK_BOARD
 DEVICE_VARS += LUXUL_BOARD
 
-IEEE8021X := wpad-basic-wolfssl
+IEEE8021X := wpad-basic-mbedtls
 B43 := $(IEEE8021X) kmod-b43
 BRCMFMAC_43602A1 := $(IEEE8021X) kmod-brcmfmac brcmfmac-firmware-43602a1-pcie
 BRCMFMAC_4366B1 := $(IEEE8021X) kmod-brcmfmac brcmfmac-firmware-4366b1-pcie
@@ -170,7 +170,7 @@ TARGET_DEVICES += asus_rt-ac87u
 define Device/asus_rt-ac88u
   $(call Device/asus)
   DEVICE_MODEL := RT-AC88U
-  DEVICE_PACKAGES := $(BRCMFMAC_4366C0) $(USB3_PACKAGES)
+  DEVICE_PACKAGES := $(BRCMFMAC_4366B1) $(BRCMFMAC_4366C0) $(USB3_PACKAGES)
   ASUS_PRODUCTID := RT-AC88U
 endef
 TARGET_DEVICES += asus_rt-ac88u

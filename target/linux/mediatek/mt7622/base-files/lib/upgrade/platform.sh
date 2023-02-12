@@ -6,8 +6,9 @@ platform_do_upgrade() {
 
 	case "$board" in
 	bananapi,bpi-r64)
-		export_bootdevice
-		export_partdevice rootdev 0
+		local rootdev="$(cmdline_get_var root)"
+		rootdev="${rootdev##*/}"
+		rootdev="${rootdev%p[0-9]*}"
 		case "$rootdev" in
 		mmc*)
 			CI_ROOTDEV="$rootdev"
@@ -73,6 +74,7 @@ platform_check_image() {
 	totolink,a8000ru|\
 	xiaomi,redmi-router-ax6s)
 		nand_do_platform_check "$board" "$1"
+		return $?
 		;;
 	*)
 		[ "$magic" != "d00dfeed" ] && {

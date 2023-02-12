@@ -8,13 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=fstools
-PKG_RELEASE:=$(AUTORELEASE)
+PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=$(PROJECT_GIT)/project/fstools.git
-PKG_MIRROR_HASH:=b0cf3e4dea4f86883409d8597e89aa1d022118bd7087881165fe67622da5a903
-PKG_SOURCE_DATE:=2022-07-17
-PKG_SOURCE_VERSION:=ebf7e9028f2facf1a87c56dd261bda82ab9bcc59
+PKG_MIRROR_HASH:=d2fc78b66c4e6ac5f51c77f92bd0d2322db78905a9dfea582fc7d975ea68ffe4
+PKG_SOURCE_DATE:=2023-02-04
+PKG_SOURCE_VERSION:=14d535e4485dc030deecbba9ab493c379df5c237
 CMAKE_INSTALL:=1
 
 PKG_LICENSE:=GPL-2.0
@@ -31,7 +31,6 @@ PKG_MAINTAINER:=John Crispin <john@phrozen.org>
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-TARGET_LDFLAGS += $(if $(CONFIG_USE_GLIBC),-lrt)
 CMAKE_OPTIONS += $(if $(CONFIG_FSTOOLS_UBIFS_EXTROOT),-DCMAKE_UBIFS_EXTROOT=y)
 CMAKE_OPTIONS += $(if $(CONFIG_FSTOOLS_OVL_MOUNT_FULL_ACCESS_TIME),-DCMAKE_OVL_MOUNT_FULL_ACCESS_TIME=y)
 CMAKE_OPTIONS += $(if $(CONFIG_FSTOOLS_OVL_MOUNT_COMPRESS_ZLIB),-DCMAKE_OVL_MOUNT_COMPRESS_ZLIB=y)
@@ -39,7 +38,7 @@ CMAKE_OPTIONS += $(if $(CONFIG_FSTOOLS_OVL_MOUNT_COMPRESS_ZLIB),-DCMAKE_OVL_MOUN
 define Package/fstools
   SECTION:=base
   CATEGORY:=Base system
-  DEPENDS:=+ubox +USE_GLIBC:librt +NAND_SUPPORT:ubi-utils
+  DEPENDS:=+ubox +NAND_SUPPORT:ubi-utils
   TITLE:=OpenWrt filesystem tools
   MENU:=1
 endef
@@ -73,6 +72,10 @@ define Package/snapshot-tool
   CATEGORY:=Base system
   TITLE:=rootfs snapshoting tool
   DEPENDS:=+libubox +fstools
+endef
+
+define Package/block-mount/conffiles
+/etc/config/fstab
 endef
 
 define Package/block-mount
