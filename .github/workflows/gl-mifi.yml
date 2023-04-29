@@ -58,7 +58,6 @@ jobs:
           CONFIG_TARGET_PROFILE="DEVICE_glinet_gl-mifi"
           # CONFIG_PACKAGE_dnsmasq is not set
           # CONFIG_PACKAGE_wpad-basic-wolfssl is not set
-          CONFIG_GLINET_BASIC_PACKAGES=y
           CONFIG_RTC_SUPPORT=y
           CONFIG_GLINET_OPENVPN=y
           CONFIG_GLINET_WIREGUARD=y
