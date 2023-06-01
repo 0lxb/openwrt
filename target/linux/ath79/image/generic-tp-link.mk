@@ -723,6 +723,7 @@ define Device/tplink_tl-wr1043nd-v1
   DEVICE_PACKAGES := kmod-usb2 kmod-usb-ledtrig-usbport kmod-switch-rtl8366rb
   TPLINK_HWID := 0x10430001
   SUPPORTED_DEVICES += tl-wr1043nd
+  DEFAULT := n
 endef
 TARGET_DEVICES += tplink_tl-wr1043nd-v1
 
@@ -805,6 +806,7 @@ define Device/tplink_tl-wr710n-v1
   DEVICE_PACKAGES := kmod-usb-chipidea2 kmod-usb-ledtrig-usbport
   TPLINK_HWID := 0x07100001
   SUPPORTED_DEVICES += tl-wr710n
+  DEFAULT := n
 endef
 TARGET_DEVICES += tplink_tl-wr710n-v1
 
@@ -817,6 +819,7 @@ define Device/tplink_tl-wr710n-v2.1
   TPLINK_HWID := 0x07100002
   TPLINK_HWREV := 0x2
   SUPPORTED_DEVICES += tl-wr710n
+  DEFAULT := n
 endef
 TARGET_DEVICES += tplink_tl-wr710n-v2.1
 
@@ -838,6 +841,7 @@ define Device/tplink_tl-wr810n-v2
   DEVICE_VARIANT := v2
   TPLINK_HWID := 0x8100002
   SUPPORTED_DEVICES += tl-wr810n-v2
+  DEFAULT := n
 endef
 TARGET_DEVICES += tplink_tl-wr810n-v2
 
@@ -867,6 +871,7 @@ define Device/tplink_tl-wr842n-v1
   DEVICE_PACKAGES := kmod-usb2 kmod-usb-ledtrig-usbport
   TPLINK_HWID := 0x8420001
   SUPPORTED_DEVICES += tl-mr3420
+  DEFAULT := n
 endef
 TARGET_DEVICES += tplink_tl-wr842n-v1
 
@@ -878,6 +883,7 @@ define Device/tplink_tl-wr842n-v2
   DEVICE_PACKAGES := kmod-usb2 kmod-usb-ledtrig-usbport
   TPLINK_HWID := 0x8420002
   SUPPORTED_DEVICES += tl-wr842n-v2
+  DEFAULT := n
 endef
 TARGET_DEVICES += tplink_tl-wr842n-v2
 

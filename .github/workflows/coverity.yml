@@ -15,11 +15,15 @@ jobs:
     permissions:
       contents: read
       packages: read
+      actions: write
     uses: ./.github/workflows/build.yml
     with:
-      target: x86/64
+      container_name: toolchain
+      target: x86
+      subtarget: 64
       build_full: true
       include_feeds: true
+      use_ccache_cache: false
       coverity_compiler_template_list: >-
         x86_64-openwrt-linux-gcc
         x86_64-openwrt-linux-musl-gcc
