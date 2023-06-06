@@ -59,6 +59,13 @@ jobs:
           cat >> .config <<EOF
           CONFIG_TARGET_ath79_generic_DEVICE_tplink_tl-wdr6500-v2=y
           CONFIG_PACKAGE_cgi-io=y
+          CONFIG_DEVEL=y
+          CONFIG_NEED_TOOLCHAIN=y
+          CONFIG_BPF_TOOLCHAIN=y
+          CONFIG_BPF_TOOLCHAIN_BUILD_LLVM=y
+          CONFIG_SDK=y
+          CONFIG_SDK_LLVM_BPF=y
+          CONFIG_MAKE_TOOLCHAIN=y
           CONFIG_PACKAGE_libbpf=m
           CONFIG_PACKAGE_libelf=m
           CONFIG_PACKAGE_libiwinfo-lua=y
@@ -89,11 +96,15 @@ jobs:
           CONFIG_PACKAGE_rpcd-mod-iwinfo=y
           CONFIG_PACKAGE_rpcd-mod-luci=y
           CONFIG_PACKAGE_rpcd-mod-rrdns=y
+          CONFIG_PACKAGE_tc-bpf=m
           CONFIG_PACKAGE_tc-full=m
           CONFIG_PACKAGE_tc-mod-iptables=m
           CONFIG_PACKAGE_uhttpd=y
           CONFIG_PACKAGE_uhttpd-mod-lua=y
           CONFIG_PACKAGE_uhttpd-mod-ubus=y
+          CONFIG_PACKAGE_xdp-filter=m
+          CONFIG_PACKAGE_xdp-loader=m
+          CONFIG_PACKAGE_xdpdump=m
           EOF
           sed -i 's/^[ \t]*//g' ./.config
           make defconfig
