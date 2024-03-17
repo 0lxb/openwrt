@@ -38,13 +38,13 @@ Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
  
 --- a/arch/powerpc/boot/wrapper
 +++ b/arch/powerpc/boot/wrapper
-@@ -326,6 +326,11 @@ adder875-redboot)
+@@ -339,6 +339,11 @@ adder875-redboot)
      platformo="$object/fixed-head.o $object/redboot-8xx.o"
      binary=y
      ;;
 +simpleboot-tl-wdr4900-v1)
 +    platformo="$object/fixed-head.o $object/simpleboot.o"
-+    link_address='0x1000000'
++    link_address='0x1500000'
 +    binary=y
 +    ;;
  simpleboot-*)

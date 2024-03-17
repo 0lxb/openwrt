@@ -39,6 +39,7 @@ tools-y += cmake
 tools-y += cpio
 tools-y += dosfstools
 tools-y += e2fsprogs
+tools-y += elfutils
 tools-y += expat
 tools-y += fakeroot
 tools-y += findutils
@@ -65,6 +66,7 @@ tools-y += pkgconf
 tools-y += quilt
 tools-y += squashfs4
 tools-y += sstrip
+tools-y += util-linux
 tools-y += zip
 tools-y += zlib
 tools-y += zstd
@@ -83,6 +85,7 @@ tools-$(if $(CONFIG_BUILD_ALL_HOST_TOOLS)$(CONFIG_TARGET_tegra),y) += cbootimage
 tools-$(if $(CONFIG_BUILD_ALL_HOST_TOOLS)$(CONFIG_USES_MINOR),y) += kernel2minor
 tools-$(if $(CONFIG_BUILD_ALL_HOST_TOOLS)$(CONFIG_USE_SPARSE),y) += sparse
 tools-$(if $(CONFIG_BUILD_ALL_HOST_TOOLS)$(CONFIG_USE_LLVM_BUILD),y) += llvm-bpf
+tools-$(if $(CONFIG_BUILD_ALL_HOST_TOOLS)$(CONFIG_USE_MOLD),y) += mold
 
 # builddir dependencies
 $(curdir)/autoconf/compile := $(curdir)/m4/compile
@@ -94,6 +97,7 @@ $(curdir)/cbootimage/compile += $(curdir)/automake/compile
 $(curdir)/cmake/compile += $(curdir)/libressl/compile $(curdir)/ninja/compile $(curdir)/expat/compile $(curdir)/xz/compile $(curdir)/zlib/compile $(curdir)/zstd/compile
 $(curdir)/dosfstools/compile := $(curdir)/automake/compile
 $(curdir)/e2fsprogs/compile := $(curdir)/libtool/compile
+$(curdir)/elfutils/compile := $(curdir)/m4/compile $(curdir)/zlib/compile $(curdir)/gnulib/compile $(curdir)/libtool/compile
 $(curdir)/fakeroot/compile := $(curdir)/libtool/compile
 $(curdir)/findutils/compile := $(curdir)/bison/compile
 $(curdir)/firmware-utils/compile += $(curdir)/cmake/compile
@@ -114,6 +118,7 @@ $(curdir)/meson/compile := $(curdir)/ninja/compile
 $(curdir)/missing-macros/compile := $(curdir)/autoconf/compile
 $(curdir)/mkimage/compile += $(curdir)/bison/compile $(curdir)/libressl/compile
 $(curdir)/mklibs/compile := $(curdir)/libtool/compile
+$(curdir)/mold/compile := $(curdir)/cmake/compile $(curdir)/zlib/compile $(curdir)/zstd/compile
 $(curdir)/mpc/compile := $(curdir)/mpfr/compile $(curdir)/gmp/compile
 $(curdir)/mpfr/compile := $(curdir)/gmp/compile
 $(curdir)/mtd-utils/compile := $(curdir)/libtool/compile $(curdir)/e2fsprogs/compile $(curdir)/zlib/compile
@@ -124,6 +129,7 @@ $(curdir)/quilt/compile := $(curdir)/autoconf/compile $(curdir)/findutils/compil
 $(curdir)/sdcc/compile := $(curdir)/bison/compile
 $(curdir)/squashfs3-lzma/compile := $(curdir)/lzma-old/compile
 $(curdir)/squashfs4/compile := $(curdir)/xz/compile $(curdir)/zlib/compile
+$(curdir)/util-linux/compile := $(curdir)/bison/compile
 $(curdir)/zstd/compile := $(curdir)/meson/compile
 
 ifneq ($(HOST_OS),Linux)
@@ -135,9 +141,7 @@ ifeq ($(HOST_OS),Darwin)
   tools-y += bash
 else
   $(curdir)/dwarves/compile += $(curdir)/elfutils/compile
-  $(curdir)/elfutils/compile := $(curdir)/m4/compile $(curdir)/zlib/compile
   tools-$(if $(CONFIG_BUILD_ALL_HOST_TOOLS)$(CONFIG_DWARVES),y) += dwarves
-  tools-y += elfutils
 endif
 
 ifneq ($(CONFIG_CCACHE)$(CONFIG_SDK),)
